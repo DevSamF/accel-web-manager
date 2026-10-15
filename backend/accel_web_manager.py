@@ -11,7 +11,7 @@ import time
 # from time import sleep  # debug only
 
 from flask import __version__ as flask_version
-from flask import Flask, Blueprint, jsonify, abort
+from flask import Flask, Blueprint, jsonify, abort, request
 from flask_cors import CORS
 from flask_compress import Compress
 
@@ -22,6 +22,8 @@ from bras_settings import bras_options
 from visual_settings import grid_settings, toast_settings
 from role_settings import privileges
 from duplicate_settings import duplicate_columns
+from log_settings import accel_log_file
+from get_accel_logs import read_accel_logs
 
 main = Blueprint("main", __name__)
 
@@ -201,6 +203,28 @@ def columns():
             "duplicateKeys": duplicate_columns,
         }
     )
+
+
+# Return new Accel-PPP log lines since the supplied byte offset.
+@main.route("/logs")
+def accel_logs():
+    if privileges.get("showLogs", True) != True:
+        abort(403)
+    if not accel_log_file:
+        return jsonify(
+            {
+                "status": "disabled",
+                "message": "Configure accel_log_file in log_settings.py",
+                "lines": [],
+                "cursor": None,
+            }
+        )
+    try:
+        cursor = request.args.get("cursor", type=int)
+        lines, next_cursor = read_accel_logs(accel_log_file, cursor)
+        return jsonify({"status": "ok", "lines": lines, "cursor": next_cursor})
+    except OSError as e:
+        return jsonify({"status": "error", "message": str(e), "lines": [], "cursor": None})
 
 
 # Rest controller for session dropping

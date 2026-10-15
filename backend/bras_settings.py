@@ -5,6 +5,6 @@ import platform
 hostname = platform.node()
 
 bras_options = {
-    f"f({hostname})": ["accel-cmd", "-Hlocalhost", "-p2001"],
+    f"{hostname}": ["accel-cmd", "-Hlocalhost", "-p2001"],
     # "br2": ["accel-cmd", "-H127.0.0.2", "-p2001"],
 }

@@ -47,6 +47,9 @@ DEB_DIR="deb/accel-web-manager_${DEBPKG_VERSION}"
 mkdir -pv "${DEB_DIR}/var/lib"
 cp -Rpv accel-web-manager "${DEB_DIR}/var/lib" # copy files prepared for tarball
 cp -Rpv ../../misc/release-scripts/DEBIAN "${DEB_DIR}" # copy files for debian package creation
+mkdir -pv "${DEB_DIR}/usr/bin"
+cp -pv ../../misc/update.sh "${DEB_DIR}/usr/bin/accel-web-manager-update"
+chmod 0755 "${DEB_DIR}/usr/bin/accel-web-manager-update"
 echo "Version: ${DEBPKG_VERSION}" >> "${DEB_DIR}/DEBIAN/control" # add version to package
 mkdir -pv "${DEB_DIR}/lib/systemd/system"
 mv -v "${DEB_DIR}/var/lib/accel-web-manager/systemd/accel-web-manager.service" "${DEB_DIR}/lib/systemd/system/"

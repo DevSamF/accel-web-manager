@@ -4,6 +4,7 @@ import StatsViewer from './StatsViewer';
 
 import classes from './MainView.module.css'
 import SessionsViewer from './SessionsViewer';
+import LogsViewer from './LogsViewer';
 
 const MainView = ({ sessionInfoReady, whatToShow, columns, sessions, filterValue, gridSettings, stats, privileges, loadSessions }) => {
     return (
@@ -19,7 +20,7 @@ const MainView = ({ sessionInfoReady, whatToShow, columns, sessions, filterValue
                 /> :
                 (whatToShow === 'stats' ?
                     <StatsViewer stats={stats} /> :
-                    <p>System is not ready</p>)
+                    (whatToShow === 'logs' ? <LogsViewer /> : <p>System is not ready</p>))
             }
         </div>
     );

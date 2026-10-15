@@ -1,4 +1,5 @@
 import React from 'react';
+import { Button } from 'rsuite';
 import BrasList from './BrasList';
 import InfoBox from './InfoBox';
 import SessionsButton from './SessionsButton';
@@ -6,7 +7,7 @@ import StatsButton from './StatsButton';
 
 import classes from './Menu.module.css'
 
-const Menu = ({ privileges, selectedBras, setSelectedBras, brasList, disableActions, sessionInfoReady,
+const Menu = ({ privileges, selectedBras, setSelectedBras, brasList, disableActions, sessionInfoReady, setWhatToShow,
     loadStats, loadSessions, stats, sessions, duplicateKeys }) => {
 
     return (
@@ -20,6 +21,11 @@ const Menu = ({ privileges, selectedBras, setSelectedBras, brasList, disableActi
                 &nbsp;
                 {privileges['showStats'] === true ?
                     <StatsButton loadStats={loadStats} disabled={disableActions}>Get Stats</StatsButton>
+                    : ''
+                }
+                &nbsp;
+                {privileges['showLogs'] !== false ?
+                    <Button size='xs' onClick={() => setWhatToShow('logs')} disabled={!sessionInfoReady}>Live Logs</Button>
                     : ''
                 }
             </div>

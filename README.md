@@ -36,6 +36,22 @@ In general, installation is easy and has minimal dependencies. All dependecies c
 - Python >= 3.7 for backend
 - Debian Linux (>= 10) or Ubuntu Linux (>= 20.04). It easy to adapt for another distros
 
+### Quick install and updates (Debian/Ubuntu)
+
+On a server that already has Accel-PPP installed, run this one command as an administrator:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/svlobanov/accel-web-manager/main/misc/install.sh | sudo bash
+```
+
+The installer installs the latest stable Debian package, enables the Nginx site and starts the services. On a new install it replaces the sample `admin/accel` password with a generated password and prints it once. Keep that password. Future stable releases can be installed with:
+
+```bash
+sudo accel-web-manager-update
+```
+
+The updater downloads and installs the latest stable `.deb` release. Debian preserves locally changed package configuration files during upgrades. New versions become available through this command after their release has been published on GitHub.
+
 ### Installation guide (using .deb package)
 You can install accel-web-manager directly on BRAS or any other server.
 
@@ -161,6 +177,16 @@ Edit `/var/lib/accel-web-manager/backend/duplicate_settings.py` to change keys a
 ### Other visual settings
 
 Edit `/var/lib/accel-web-manager/backend/visual_settings.py` to change other visual settings
+
+### Live Accel-PPP logs
+
+Set `accel_log_file` in `/var/lib/accel-web-manager/backend/log_settings.py` to the log file configured for Accel-PPP or its syslog output, for example:
+
+```python
+accel_log_file = "/var/log/accel-ppp/accel-ppp.log"
+```
+
+The `accel-web-manager` service account must be able to read that file. Restart the service after changing the setting. The **Live Logs** view tails new lines and keeps the latest 2,000 lines in the browser. It displays the original messages, including session connections, failures and disconnects; no log format conversion is required. Set `showLogs` to `False` in `role_settings.py` to hide and disable the endpoint.
 
 ## Contributing
 

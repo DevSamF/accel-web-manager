@@ -1,0 +1,27 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 55px);
+    min-height: 240px;
+    border: 1px solid #d5d5d5;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 10px;
+    border-bottom: 1px solid #d5d5d5;
+    font-size: 13px;
+}
+
+.header span { color: #666; }
+
+.output {
+    flex: 1;
+    overflow: auto;
+    margin: 0;
+    padding: 10px;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    font: 12px/1.45 Consolas, 'Courier New', monospace;
+}
