@@ -194,7 +194,7 @@ By default, flask will start the backend on port 5000
 
 #### Frontend development requirements
 
-For frontend development, nodejs and npm are required. Please install nodejs >= 18 and npm >= 8. For Linux distros you can use [nodesource](https://github.com/nodesource/distributions) binary repo. For MacOS use [homebrew](https://brew.sh/)
+For frontend development, nodejs and npm are required. Please install nodejs >= 20.19 (or >= 22.12) and npm >= 8. For Linux distros you can use [nodesource](https://github.com/nodesource/distributions) binary repo. For MacOS use [homebrew](https://brew.sh/)
 
 #### Frontend development guide
 
@@ -205,12 +205,12 @@ $ npm install
 $ npm start
 ```
 
-`npm install` will download and install required dependencies
+`npm install` will download and install required dependencies. `npm start` runs the Vite dev server, by default on http://localhost:5173/
 
 By default, all API request will be sent to http://localhost:5000/. Please redefine it if required
 ```bash
 # in frontend dir
-$ echo "REACT_APP_FORCE_BASE_URL=http://YOUR_BACKEND_HOST:PORT/" > .env.development.local
+$ echo "VITE_FORCE_BASE_URL=http://YOUR_BACKEND_HOST:PORT/" > .env.development.local
 ```
 
 Then stop the application id your IDE and start again using `npm start`

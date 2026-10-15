@@ -16,7 +16,7 @@ const getTrafficDemo = async () => {
 
 export const getTraffic = async (bras, sid) => {
 
-    if(process.env.REACT_APP_DEMO_MODE==='1')
+    if(import.meta.env.VITE_DEMO_MODE==='1')
         return getTrafficDemo()
 
     let getResp = await axios.get("traffic/bras/" + bras + "/sid/" + sid)

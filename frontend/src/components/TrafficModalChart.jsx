@@ -85,7 +85,7 @@ const TrafficModalChart = ({ data, showTraffic, showPps }) => {
 
     useEffect(() => { // calculate deltas and max values
         const metrics = ['rb', 'tb', 'rp', 'tp']
-        const deltas = process.env.REACT_APP_DEMO_MODE === '1' ?
+        const deltas = import.meta.env.VITE_DEMO_MODE === '1' ?
             getValuesPerSecDemo(data, metrics) :
             getValuesPerSec(data, metrics);
 
