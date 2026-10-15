@@ -5,7 +5,7 @@ const BrasList = ({selectedBras, setSelectedBras, brasList}) => {
     return (
         <SelectPicker
             size='xs'
-            label='BRAS'
+            label='BNG'
             placeholder='All'
             searchable={false}
             value={selectedBras}

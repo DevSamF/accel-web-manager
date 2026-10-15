@@ -15,7 +15,7 @@ const InfoBox = ({ sessions, stats }) => {
     // change last updated when update sesssions
     useEffect(() => {
         if (sessions !== false) {
-            setLastUpdated(getTime() + " sessions:" + sessions['sessions'].length)
+            setLastUpdated(getTime() + " Total conectados:" + sessions['sessions'].length)
             setIssues(sessions['issues'])
         }
     }, [sessions])
@@ -30,7 +30,7 @@ const InfoBox = ({ sessions, stats }) => {
 
     return (
         <div>
-            <label>last&nbsp;updated: {lastUpdated}</label>
+            <label>Última&nbsp;atualização: {lastUpdated}</label>
             {Object.keys(issues).length > 0 ?
                 <strong className={classes.IssueLabel} onClick={() => {
                     toast.error(<ListOfIssues issues={issues} />, { autoClose: false, transition: Flip })

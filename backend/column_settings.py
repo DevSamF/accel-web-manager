@@ -62,7 +62,7 @@ session_columns = {
     "ip6": {"name": "i6", "header": "IPv6", "type": "string", "operator": "contains"},
     "ip6-dp": {
         "name": "i6d",
-        "header": "IPv6 DP",
+        "header": "IPv6 PD",
         "type": "string",
         "operator": "contains",
     },
@@ -173,7 +173,7 @@ bras_columns = {
     # Use '"defaultVisible": False' if you do not need this attribute
     "bras": {
         "name": "br",  # Do not rename. It is used for dropping sessions
-        "header": "BRAS",
+        "header": "BNG",
         "type": "select",
         "operator": "inlist",
         "filterEditor": "SelectFilter",
