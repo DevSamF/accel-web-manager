@@ -37,11 +37,11 @@ const App = () => {
     const initSettings = async () => {
       //get base settings (API url) from fronted config file
       if (axios.defaults.baseURL === undefined) {
-        if (process.env.REACT_APP_FORCE_BASE_URL === undefined) {
-          const baseSettings = await axios.get(process.env.REACT_APP_SETTINGS_LINK)
+        if (import.meta.env.VITE_FORCE_BASE_URL === undefined) {
+          const baseSettings = await axios.get(import.meta.env.VITE_SETTINGS_LINK)
           axios.defaults.baseURL = baseSettings.data['baseUrl']
         } else {
-          axios.defaults.baseURL = process.env.REACT_APP_FORCE_BASE_URL
+          axios.defaults.baseURL = import.meta.env.VITE_FORCE_BASE_URL
         }
       }
       // get grid settings
