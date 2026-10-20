@@ -28,6 +28,7 @@ const Menu = ({ privileges, selectedBras, setSelectedBras, brasList, disableActi
                     <Button size='xs' onClick={() => setWhatToShow('logs')} disabled={!sessionInfoReady}>Live Logs</Button>
                     : ''
                 }
+                
             </div>
             <div className={classes.MenuInfo}>
                 <InfoBox stats={stats} sessions={sessions} />

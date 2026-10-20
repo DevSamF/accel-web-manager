@@ -16,6 +16,8 @@ import classes from './App.module.css';
 
 import './custom-theme.less';
 
+import Fab from './components/Fab'; 
+
 const App = () => {
   const [whatToShow, setWhatToShow] = useState('sessions') // what to show (grid of sessions, stats, etc)
   const [sessionInfoReady, setSessionInfoReady] = useState(false) // true if info received from backend (columns, filters, etc)
@@ -129,6 +131,9 @@ const App = () => {
         privileges={privileges} /* for dropping session */
         loadSessions={loadSessions} /* for dropping session */
       />
+
+      <Fab />
+
     </div>
   );
 }

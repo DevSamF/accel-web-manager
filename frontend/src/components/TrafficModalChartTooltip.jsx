@@ -14,12 +14,12 @@ const TrafficModalChartTooltip = ({ active, payload, label }) => {
         //transform payload as requred for visualisation
         const data = {
             rx: {
-                speed: { color: '#808080' },
-                pps: { color: '#808080' }
+                speed: { color: 'currentColor' },
+                pps: { color: 'currentColor' }
             },
             tx: {
-                speed: { color: '#808080' },
-                pps: { color: '#808080' }
+                speed: { color: 'currentColor' },
+                pps: { color: 'currentColor' }
             }
         }
         for (const element of payload) {

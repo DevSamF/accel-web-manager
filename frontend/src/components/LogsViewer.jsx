@@ -2,12 +2,6 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import axios from 'axios';
 import classes from './LogsViewer.module.css';
 
-const withCurrentTimestamp = (line) => {
-    const now = new Date();
-    const time = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}:${String(now.getSeconds()).padStart(2, '0')}`;
-    return line.replace(/^\[[^\]]+\]/, `[${time}]`);
-};
-
 const parseLogLine = (line, index) => {
     const match = line.match(/^\[([^\]]+)\]:\s*(\w+):\s*(.*)$/);
     const rawLevel = match?.[2]?.toLowerCase() || 'info';
@@ -56,34 +50,8 @@ const LogsViewer = () => {
             }
         };
 
-        const startPolling = () => {
-            poll();
-            timer = window.setInterval(poll, 1500);
-        };
-
-        const startLocalDemo = async () => {
-            try {
-                const response = await fetch('/demo-logs.local.json', { cache: 'no-store' });
-                if (!response.ok) throw new Error('Local fixture not found');
-                const fixture = await response.json();
-                if (!Array.isArray(fixture) || fixture.length === 0 || !fixture.every(line => typeof line === 'string')) {
-                    throw new Error('Local fixture must be a non-empty array of log lines');
-                }
-                if (!mounted) return;
-                let index = 0;
-                const appendNextLine = () => {
-                    setLines(previous => [...previous, withCurrentTimestamp(fixture[index])].slice(-2000));
-                    index = (index + 1) % fixture.length;
-                };
-                appendNextLine();
-                timer = window.setInterval(appendNextLine, 1500);
-            } catch {
-                if (mounted) startPolling();
-            }
-        };
-
-        if (import.meta.env.DEV) startLocalDemo();
-        else startPolling();
+        poll();
+        timer = window.setInterval(poll, 1500);
 
         return () => { mounted = false; window.clearInterval(timer); };
     }, []);

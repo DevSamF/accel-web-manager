@@ -2,4 +2,4 @@
 
 # Set this to the log file configured in accel-ppp.conf (or your syslog output).
 # The accel-web-manager service account must have read access to the file.
-accel_log_file = ""
+accel_log_file = "/var/log/accel-ppp/accel-ppp.log"

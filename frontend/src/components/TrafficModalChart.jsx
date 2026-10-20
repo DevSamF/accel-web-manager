@@ -101,15 +101,18 @@ const TrafficModalChart = ({ data, showTraffic, showPps }) => {
     return (
         <ResponsiveContainer>
             <LineChart data={deltas}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="ts" type='number' domain={['dataMin', 'dataMax']} tickFormatter={formatTimestamp} />
+                <CartesianGrid stroke="var(--color-base-300)" strokeDasharray="3 3" />
+                <XAxis dataKey="ts" type='number' domain={['dataMin', 'dataMax']} tickFormatter={formatTimestamp}
+                    stroke="var(--color-base-content)" tick={{ fill: 'var(--color-base-content)' }} />
                 {showTraffic ?
                     <>
                         <YAxis
-                            label={{ value: 'Traffic, bps', angle: -90, position: 'insideLeft' }}
                             yAxisId={1}
                             tickFormatter={(val) => val / trafficUnitInfo[0]}
                             unit={trafficUnitInfo[1]}
+                            stroke="var(--color-base-content)"
+                            tick={{ fill: 'var(--color-base-content)' }}
+                            label={{ value: 'Traffic, bps', angle: -90, position: 'insideLeft', fill: 'var(--color-base-content)' }}
                         />
                         <Line type="monotone" isAnimationActive={false} dataKey="rb" stroke="#bd7ebe" yAxisId={1} />
                         <Line type="monotone" isAnimationActive={false} dataKey="tb" stroke="#ef5675" yAxisId={1} />
@@ -118,13 +121,15 @@ const TrafficModalChart = ({ data, showTraffic, showPps }) => {
                 {showPps ?
                     <>
                         <YAxis
-                            label={showTraffic ? { value: 'Packets, pps', angle: -90, position: 'right', offset: -10 } :
-                                { value: 'Packets, pps', angle: -90, position: 'insideLeft' }
+                            label={showTraffic ? { value: 'Packets, pps', angle: -90, position: 'right', offset: -10, fill: 'var(--color-base-content)' } :
+                                { value: 'Packets, pps', angle: -90, position: 'insideLeft', fill: 'var(--color-base-content)' }
                             }
                             yAxisId={2}
                             orientation={showTraffic ? 'right' : 'left'}
                             tickFormatter={(val) => val / ppsUnitInfo[0]}
                             unit={ppsUnitInfo[1]}
+                            stroke="var(--color-base-content)"
+                            tick={{ fill: 'var(--color-base-content)' }}
                         />
                         <Line type="monotone" isAnimationActive={false} dataKey="rp" stroke="#00b7c7" yAxisId={2} />
                         <Line type="monotone" isAnimationActive={false} dataKey="tp" stroke="#4421af" yAxisId={2} />
@@ -134,7 +139,7 @@ const TrafficModalChart = ({ data, showTraffic, showPps }) => {
                 <Tooltip
                     content={<TrafficModalChartTooltip />}
                 />
-                <Legend formatter={(value) => metricNames[value]} />
+                <Legend formatter={(value) => metricNames[value]} wrapperStyle={{ color: 'var(--color-base-content)' }} />
             </LineChart>
         </ResponsiveContainer>
     );

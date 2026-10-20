@@ -1,0 +1,44 @@
+.fab-custom {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background-color: var(--color-base-200, #e5e7eb);
+  color: var(--color-base-content, #1f2937);
+  border: none;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  font-size: 24px;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  z-index: 1000;
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.fab-custom:hover {
+  background-color: var(--color-base-300, #d1d5db);
+  transform: scale(1.05);
+}
+
+/* daisyUI expects the theme-controller checkbox to be visually hidden */
+.fab-custom input.theme-controller {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+  opacity: 0;
+}
+
+.fab-custom svg {
+  grid-area: 1 / 1;
+  display: block;
+  width: 28px;
+  height: 28px;
+}

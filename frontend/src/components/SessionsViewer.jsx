@@ -1,8 +1,8 @@
-import React from 'react';
-import { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import ReactDataGrid from '@inovua/reactdatagrid-community';
 import '@inovua/reactdatagrid-community/index.css';
+import '@inovua/reactdatagrid-community/theme/default-dark.css';
 
 import TrafficModal from './TrafficModal';
 
@@ -13,6 +13,15 @@ import classes from './SessionsViewer.module.css'
 const SessionsViewer = ({ columns, sessions, filterValue, privileges, loadSessions, gridSettings }) => {
     const [selectedSessions, setSelectedSessions] = useState({}) // selected sessions (to save selected sessions on reload)
     const [trafficModal, setTrafficModal] = useState({ open: false, ses: {} })
+    const [isDarkTheme, setIsDarkTheme] = useState(() => document.documentElement.dataset.theme === 'synthwave')
+
+    useEffect(() => {
+        const themeObserver = new MutationObserver(() => {
+            setIsDarkTheme(document.documentElement.dataset.theme === 'synthwave')
+        })
+        themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] })
+        return () => themeObserver.disconnect()
+    }, [])
 
     return (
         <>
@@ -32,6 +41,7 @@ const SessionsViewer = ({ columns, sessions, filterValue, privileges, loadSessio
                 selected={selectedSessions}
                 onSelectionChange={({ selected }) => { setSelectedSessions(selected) }}
                 {...gridSettings}
+                theme={isDarkTheme ? 'default-dark' : 'default-light'}
             />
             {trafficModal.open ?
                 <TrafficModal modal={trafficModal} setModal={setTrafficModal} /> :

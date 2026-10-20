@@ -7,6 +7,18 @@
       content="Accel-PPP Web Manager"
     />
     <title>Accel-PPP Web Manager</title>
+    <script>
+      // apply the saved theme before paint to avoid a flash of the light theme
+      (function () {
+        var theme = 'light';
+        try {
+          theme = localStorage.getItem('accel-theme') === 'synthwave' ? 'synthwave' : 'light';
+        } catch (_) {
+          // Storage may be disabled; the page can still use the default theme.
+        }
+        document.documentElement.setAttribute('data-theme', theme);
+      })();
+    </script>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>

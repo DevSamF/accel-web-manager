@@ -1,0 +1,88 @@
+/*
+ * Theme bridge: daisyUI / Tailwind variables do not reach RSuite or the
+ * active daisyUI theme. The Inovua session grid uses its own native
+ * light/dark themes, selected by SessionsViewer.
+ *
+ * This file MUST be imported after every other stylesheet (see index.jsx)
+ * because RSuite declares its tokens in `:root`, and a later declaration
+ * would otherwise win over these overrides.
+ */
+:root[data-theme] {
+  color-scheme: light;
+  --log-info: #267343;
+  --log-warn: #805d00;
+  --log-error: #a52a35;
+  --log-token: #803a99;
+  --log-interface: #315ca8;
+
+  /* RSuite design tokens */
+  --rs-body: var(--color-base-100);
+  --rs-bg-card: var(--color-base-100);
+  --rs-text-primary: var(--color-base-content);
+  --rs-text-secondary: var(--color-base-content);
+  --rs-border-primary: var(--color-base-300);
+  --rs-input-bg: var(--color-base-100);
+  --rs-input-focus-border: var(--color-primary);
+  --rs-btn-default-bg: var(--color-base-200);
+  --rs-btn-default-text: var(--color-base-content);
+  --rs-btn-default-hover-bg: var(--color-base-300);
+  --rs-btn-default-active-bg: var(--color-base-300);
+}
+
+:root[data-theme='synthwave'] {
+  color-scheme: dark;
+  --log-info: #70d89a;
+  --log-warn: #f5c66a;
+  --log-error: #ff8796;
+  --log-token: #e2a4ff;
+  --log-interface: #8fc9ff;
+}
+
+/* Inovua's filter editors keep their own theme classes; force them to follow
+   the page palette when returning from the dark grid theme. */
+:root[data-theme='light'] .InovuaReactDataGrid .InovuaReactDataGrid__column-header__filter-wrapper {
+  background-color: var(--color-base-100);
+  border-top-color: var(--color-base-300);
+}
+
+:root[data-theme='light'] .InovuaReactDataGrid .InovuaReactDataGrid__column-header__filter-wrapper .inovua-react-toolkit-text-input,
+:root[data-theme='light'] .InovuaReactDataGrid .InovuaReactDataGrid__column-header__filter-wrapper .inovua-react-toolkit-date-input,
+:root[data-theme='light'] .InovuaReactDataGrid .InovuaReactDataGrid__column-header__filter-wrapper input,
+:root[data-theme='light'] .InovuaReactDataGrid .InovuaReactDataGrid__column-header__filter-wrapper select,
+:root[data-theme='light'] .InovuaReactDataGrid .InovuaReactDataGrid__column-header__filter-wrapper textarea {
+  color: var(--color-base-content);
+  background-color: var(--color-base-100);
+  border-color: var(--color-base-300);
+}
+
+/* The portal used by RSuite modals, pickers and notifications remains under
+   body, so root-level tokens and these transitions cover it as well. */
+*,
+*::before,
+*::after {
+  transition-property: color, background-color, border-color, box-shadow, fill, stroke;
+  transition-duration: 180ms;
+  transition-timing-function: ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms;
+  }
+}
+
+.Toastify__toast {
+  color: var(--color-base-content);
+  background-color: var(--color-base-200);
+}
+
+.Toastify__close-button {
+  color: var(--color-base-content);
+}
+
+body {
+  background-color: var(--color-base-100);
+  color: var(--color-base-content);
+}
