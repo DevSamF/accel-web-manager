@@ -10,7 +10,8 @@ import time
 
 # from time import sleep  # debug only
 
-from flask import __version__ as flask_version
+from importlib.metadata import version as _pkg_version
+
 from flask import Flask, Blueprint, jsonify, abort, request
 from flask_cors import CORS
 from flask_compress import Compress
@@ -26,6 +27,7 @@ from log_settings import accel_log_file
 from get_accel_logs import read_accel_logs
 
 main = Blueprint("main", __name__)
+flask_version = _pkg_version("flask")
 
 # Execute the command and return exit_code, stdout and stdin
 def exec_command(bras_options, command):

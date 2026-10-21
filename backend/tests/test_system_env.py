@@ -5,6 +5,8 @@ import flask
 from accel_web_manager import create_app
 import accel_web_manager
 
+import importlib.metadata
+
 
 @mock.patch.object(sys, "hexversion", 0x03060000)
 def test_old_python_version():
@@ -38,8 +40,7 @@ def test_flask_version_210():
 @mock.patch.object(accel_web_manager, "flask_version", "2.2.2")
 def test_flask_version_222():
     print("accel_web_manager.flask_version=" + accel_web_manager.flask_version)
-    print("real flask version(flask.__version__)=" + flask.__version__)
-
+    print("real flask version=" + importlib.metadata.version("flask"))
     attribute_exception = False
     try:
         app_flask_222 = create_app()
