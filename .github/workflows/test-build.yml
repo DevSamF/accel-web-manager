@@ -6,10 +6,11 @@ on:
   push:
     branches:
       - main
+    tags:
+      - "[0-9]*"
 
 jobs:
   Run-BE-Tests-Pip-Versions:
-    #if: ${{ false }} # disable for now
     strategy:
       fail-fast: false
       matrix:
@@ -17,18 +18,21 @@ jobs:
     runs-on: ${{ matrix.distro }}
     steps:
       - name: Check out repository code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
+      - name: Set up Python (avoids PEP 668 externally-managed error)
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
       - name: Install backend libraries and pytest using pip
-        run: pip3 install packaging Flask Flask-Compress Flask-Cors pytest pytest-cov
+        run: python -m pip install packaging Flask Flask-Compress Flask-Cors pytest pytest-cov
       - name: Run backend tests (warnings are ok)
         working-directory: ./backend
-        run: python3 -m pytest --verbose --cov
+        run: python -m pytest --verbose --cov
       - name: Run backend tests (treat warnings as errors)
         working-directory: ./backend
-        run: python3 -m pytest --verbose --cache-clear -Werror --cov
+        run: python -m pytest --verbose --cache-clear -Werror --cov
 
   Run-BE-Tests-On-Distros:
-    #if: ${{ false }} # disable for now
     strategy:
       fail-fast: false
       matrix:
@@ -47,7 +51,7 @@ jobs:
       - name: Display container distro name
         run: cat /etc/issue
       - name: Check out repository code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Prepare package manager
         run: apt update
       - name: Install backend libraries and pytest from distro repository
@@ -60,7 +64,6 @@ jobs:
         run: python3 -m pytest --verbose --cache-clear -Werror --cov
 
   Run-BE-Tests-On-RH-Pip:
-    #if: ${{ false }} # disable for now
     strategy:
       fail-fast: false
       matrix:
@@ -75,7 +78,7 @@ jobs:
           cat /etc/redhat-release
           cat /etc/issue
       - name: Check out repository code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Upgrade packages
         run: dnf -y upgrade
       - name: Install python3 and pip3 (version is not specified)
@@ -97,7 +100,6 @@ jobs:
         run: python3 -m pytest --verbose --cache-clear -Werror --cov
 
   Build-on-Ubuntu:
-    #if: ${{ false }} # disable for now
     needs:
       [
         Run-BE-Tests-On-Distros,
@@ -107,7 +109,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - name: Setup Node.js (Vite requires >= 20.19)
@@ -135,24 +137,23 @@ jobs:
       - name: Check if nginx serves the frontend
         run: curl -D - http://localhost:8018/
       - name: Upload tarball
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: tarball
           path: build/release-*/*.txz
           if-no-files-found: error
       - name: Upload deb package
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: deb-package
           path: build/release-*/*.deb
           if-no-files-found: error
 
   Build-on-MacOS:
-    #if: ${{ false }} # disable for now
     runs-on: macos-latest
     steps:
       - name: Check out repository code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - name: Setup Node.js (Vite requires >= 20.19)
@@ -161,6 +162,10 @@ jobs:
           node-version: 22
           cache: npm
           cache-dependency-path: frontend/package-lock.json
+      - name: Set up Python (avoids PEP 668 externally-managed error)
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
       - name: Display Repository info
         run: |
           git branch
@@ -170,7 +175,7 @@ jobs:
       - name: Build tarball and deb package
         run: misc/release-scripts/release.sh
       - name: Install backend libraries
-        run: pip3 install packaging gunicorn Flask Flask-Compress Flask-Cors
+        run: python -m pip install packaging gunicorn Flask Flask-Compress Flask-Cors
       - name: Get short commit value
         run: echo "RELEASE_SHA_SHORT=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
       - name: Run backend using gunicorn
@@ -198,7 +203,7 @@ jobs:
       - name: Display host user
         run: id
       - name: Check out repository code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Display Repository info
         run: |
           git branch
@@ -206,7 +211,7 @@ jobs:
       - name: Build ${{ matrix.distro }} container with systemd
         run: docker build . -t with-systemd/${{ matrix.distro }} --build-arg SOURCE=${{ matrix.distro }} -f .github/workflows/Deb-Based-Systemd.Dockerfile
       - name: Download deb package to install
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: deb-package
       - name: Run built ${{ matrix.distro }} container
@@ -231,3 +236,24 @@ jobs:
         run: curl -u admin:accel -D - http://localhost:8018/
       - name: Check if backend replies through nginx
         run: curl -u admin:accel -D - http://localhost:8018/api/stats/all
+
+  Release:
+    if: startsWith(github.ref, 'refs/tags/')
+    needs: [Build-on-Ubuntu, Install-Run]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Download tarball and deb package
+        uses: actions/download-artifact@v4
+        with:
+          path: dist
+          merge-multiple: true
+      - name: Create GitHub release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            dist/**/*.txz
+            dist/**/*.deb
+          fail_on_unmatched_files: true
+          generate_release_notes: true
