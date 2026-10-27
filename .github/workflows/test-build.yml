@@ -8,6 +8,7 @@ on:
       - main
     tags:
       - "[0-9]*"
+      - "v[0-9]*"
 
 jobs:
   Run-BE-Tests-Pip-Versions:

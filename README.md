@@ -41,7 +41,7 @@ In general, installation is easy and has minimal dependencies. All dependecies c
 On a server that already has Accel-PPP installed, run this one command as an administrator:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/svlobanov/accel-web-manager/main/misc/install.sh | sudo bash
+curl -fsSL https://raw.githubusercontent.com/DevSamF/accel-web-manager/main/misc/install.sh | sudo bash
 ```
 
 The installer installs the latest stable Debian package, enables the Nginx site and starts the services. On a new install it replaces the sample `admin/accel` password with a generated password and prints it once. Keep that password. Future stable releases can be installed with:
@@ -57,8 +57,8 @@ You can install accel-web-manager directly on BRAS or any other server.
 
 Download package and install
 ```bash
-$ wget https://github.com/svlobanov/accel-web-manager/releases/download/v0.4.0/accel-web-manager_0.4.0-1_all.deb
-$ sudo apt install ./accel-web-manager_0.4.0-1_all.deb
+$ wget https://github.com/DevSamF/accel-web-manager/releases/download/v0.5.0/accel-web-manager_0.5.0-1_all.deb
+$ sudo apt install ./accel-web-manager_0.5.0-1_all.deb
 ```
 
 Check backend running status
@@ -87,7 +87,7 @@ Now follow http://YOUR_SERVER_IP_OR_HOSTNAME:8018/ (default creds: admin/accel i
 
 ### Upgrade guide (using .deb package)
 
-1. Download and install the new version using the command `sudo dpkg --force-confask -i accel-web-manager_0.4.0-1_all.deb`
+1. Download and install the new version using the command `sudo dpkg --force-confask -i accel-web-manager_0.5.0-1_all.deb`
 2. Check the diff between old and new settings files that dpkg asked about. If you answered Y, then an old file has '.dpkg-old' suffix. If you answered N, then a new file has '.dpkg-dist' suffix. You do not need to change '.dpkg-old' or '.dpkg-dist' files. Change only .py settings files
 3. Restart the backend (`sudo systemctl restart accel-web-manager`) if you changed config files on step 2
 4. Refresh Web-UI in your browser (ctrl/cmd+shift+r in chrome)
@@ -103,8 +103,8 @@ $ sudo apt install python3-packaging python3-flask python3-flask-compress python
 
 Download tarball and extract
 ```bash
-$ wget https://github.com/svlobanov/accel-web-manager/releases/download/v0.4.0/accel-web-manager-v0.4.0.txz
-$ sudo tar -xf accel-web-manager-v0.4.0.txz -C /var/lib/
+$ wget https://github.com/DevSamF/accel-web-manager/releases/download/v0.5.0/accel-web-manager-v0.5.0.txz
+$ sudo tar -xf accel-web-manager-v0.5.0.txz -C /var/lib/
 ```
 
 Create systemd service for backend and run
@@ -192,14 +192,14 @@ The `accel-web-manager` service account must be able to read that file. Restart 
 
 > Please use English for all requests
 
-Accel-web-manager is an open source project, and contributions of any kind are welcome and appreciated. Open issues, bugs, and feature requests are all listed on the [issues](https://github.com/svlobanov/accel-web-manager/issues) tab and labeled accordingly. Feel free to open bug tickets and make feature requests.
+Accel-web-manager is an open source project, and contributions of any kind are welcome and appreciated. Open issues, bugs, and feature requests are all listed on the [issues](https://github.com/DevSamF/accel-web-manager/issues) tab and labeled accordingly. Feel free to open bug tickets and make feature requests.
 
 View [CONTRIBUTING.md](CONTRIBUTING.md) to learn about the style guide, folder structure, scripts, and how to contribute.
 
 ## Development
 
 ```bash
-git clone https://github.com/svlobanov/accel-web-manager
+git clone https://github.com/DevSamF/accel-web-manager
 ```
 > Please use your own fork for development
 

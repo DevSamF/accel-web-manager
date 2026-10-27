@@ -2,7 +2,7 @@
 set -euo pipefail
 
 if [ "$(id -u)" -ne 0 ]; then
-    echo "Run this installer with sudo, for example: curl -fsSL https://raw.githubusercontent.com/svlobanov/accel-web-manager/main/misc/install.sh | sudo bash" >&2
+    echo "Run this installer with sudo, for example: curl -fsSL https://raw.githubusercontent.com/DevSamF/accel-web-manager/main/misc/install.sh | sudo bash" >&2
     exit 1
 fi
 if [ ! -r /etc/os-release ]; then
@@ -20,7 +20,7 @@ DEBIAN_FRONTEND=noninteractive apt-get install -y ca-certificates curl python3 n
 
 script_tmp="$(mktemp /tmp/accel-web-manager-install.XXXXXX)"
 trap 'rm -f "$script_tmp"' EXIT
-curl -fsSL https://raw.githubusercontent.com/svlobanov/accel-web-manager/main/misc/update.sh -o "$script_tmp"
+curl -fsSL https://raw.githubusercontent.com/DevSamF/accel-web-manager/main/misc/update.sh -o "$script_tmp"
 bash "$script_tmp"
 install -m 0755 "$script_tmp" /usr/bin/accel-web-manager-update
 

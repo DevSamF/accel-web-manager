@@ -10,7 +10,7 @@ command -v curl >/dev/null || { echo "curl is required" >&2; exit 1; }
 command -v python3 >/dev/null || { echo "python3 is required" >&2; exit 1; }
 command -v apt-get >/dev/null || { echo "This updater supports Debian and Ubuntu" >&2; exit 1; }
 
-release_api="https://api.github.com/repos/svlobanov/accel-web-manager/releases/latest"
+release_api="https://api.github.com/repos/DevSamF/accel-web-manager/releases/latest"
 deb_url="$(curl -fsSL -H 'Accept: application/vnd.github+json' -H 'User-Agent: accel-web-manager-updater' "$release_api" \
     | python3 -c 'import json,sys; r=json.load(sys.stdin); print(next((a["browser_download_url"] for a in r.get("assets",[]) if a["name"].endswith("_all.deb")), ""))')"
 if [ -z "$deb_url" ]; then
