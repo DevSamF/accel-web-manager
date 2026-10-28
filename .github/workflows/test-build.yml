@@ -146,7 +146,7 @@ jobs:
       - name: Upload deb package
         uses: actions/upload-artifact@v4
         with:
-          name: deb-package
+          name: debs-stable-all
           path: build/release-*/*.deb
           if-no-files-found: error
 
@@ -214,7 +214,7 @@ jobs:
       - name: Download deb package to install
         uses: actions/download-artifact@v4
         with:
-          name: deb-package
+          name: debs-stable-all
       - name: Run built ${{ matrix.distro }} container
         run: docker run -d --name test-cont -p 8018:8018 --cgroupns=host -v /sys/fs/cgroup:/sys/fs/cgroup -v $(pwd):/data --privileged with-systemd/${{ matrix.distro }}
       - name: Wait until systemd is up
@@ -238,9 +238,23 @@ jobs:
       - name: Check if backend replies through nginx
         run: curl -u admin:accel -D - http://localhost:8018/api/stats/all
 
+  Publish-APT:
+    if: startsWith(github.ref, 'refs/tags/') || (github.event_name == 'workflow_dispatch' && github.ref_name == 'main')
+    needs: [Build-on-Ubuntu, Install-Run]
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    uses: mithro/apt-repo-action/.github/workflows/publish-apt.yml@477b0f86f1ed4a22a7d2873aa478c457bf84bb14
+    with:
+      suites: stable
+      description: "Web management interface for Accel-PPP"
+    secrets:
+      gpg-private-key: ${{ secrets.APT_GPG_PRIVATE_KEY }}
+
   Release:
     if: startsWith(github.ref, 'refs/tags/')
-    needs: [Build-on-Ubuntu, Install-Run]
+    needs: [Build-on-Ubuntu, Install-Run, Publish-APT]
     runs-on: ubuntu-latest
     permissions:
       contents: write
