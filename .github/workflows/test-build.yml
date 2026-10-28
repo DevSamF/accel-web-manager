@@ -239,7 +239,7 @@ jobs:
         run: curl -u admin:accel -D - http://localhost:8018/api/stats/all
 
   Publish-APT:
-    if: startsWith(github.ref, 'refs/tags/') || (github.event_name == 'workflow_dispatch' && github.ref_name == 'apt-repository')
+    if: startsWith(github.ref, 'refs/tags/') || (github.event_name == 'workflow_dispatch' && github.ref_name == 'main')
     needs: [Build-on-Ubuntu, Install-Run]
     permissions:
       contents: read
